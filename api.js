@@ -13,7 +13,5 @@ async function getUser(accessToken) {
     return userInfo;
 }
 module.exports = {
-    getUser,
-    getDeals,
-    updateDeal
+    getUser
 };
