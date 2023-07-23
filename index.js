@@ -41,12 +41,14 @@ app.get('/', async (req, res) => {
 
 app.get('/callback', (req, res) => {
     const authCode = req.query.code;
-    const promise = apiClient.authorize(authCode);
+    const promise = defaultClient.authorize(authCode);
 
     promise.then(() => {
-        req.session.accessToken = apiClient.authentications.oauth2.accessToken;
+        req.session.accessToken = defaultClient.authentications.oauth2.accessToken;
         res.redirect('/');
-    }, (exception) => {
-        // error occurred, exception will be of type src/exceptions/OAuthProviderException
+    }).catch((error) => {
+        console.error('Error during authorization:', error);
+        // Handle the error here (e.g., redirect to an error page or show an error message)
+        res.status(500).json({ error: 'Authorization failed' });
     });
 });
